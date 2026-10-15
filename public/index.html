@@ -1,57 +1,58 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dew Day Trading & Projects</title>
-    <link rel="stylesheet" href="{% static 'main/Styles/styles.css' %}">
+    <title>Dew Day Trading &amp; Projects</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
 </head>
-
+<body class="light-mode">
     <header>
         <div class="header-container">
             <div class="header-title">
-                <h1>Dew Day Trading & Projects</h1>
-                <nav>
+                <h1>Dew Day Trading &amp; Projects</h1>
+                <nav aria-label="Main navigation">
                     <ul>
-                        <li><a href="#" onclick="showSection('home')">Home</a></li>
-                        <li><a href="#" onclick="showSection('about')">About</a></li>
-                        <li><a href="#" onclick="showSection('services')">Services</a></li>
-                        <li><a href="#" onclick="showSection('projects')">Projects</a></li>
-                        <li><a href="#" onclick="showSection('compliance')">Compliance</a></li>
-                        <li><a href="#" onclick="showSection('entertainment')">Entertainment Services</a></li>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#compliance">Compliance</a></li>
+                        <li><a href="#entertainment">Entertainment Services</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <button class="toggle-mode">
-        <img src="{% static 'main/Styles/images/moon1.png' %}" alt="Dark Mode" id="theme-icon" width="30" height="30">
+    <button class="toggle-mode" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+        <img src="/images/moon1.png" alt="" id="theme-icon" width="30" height="30">
     </button>
 
-    <div class="main-content">
+    <main class="main-content">
         <div class="sections">
             <section id="home" class="content-section active">
-                <h2>Welcome to Dew Day Trading & Projects</h2>
-                <p>Providing service with integrity since 2017!</p>
+                <h2>Welcome to Dew Day Trading &amp; Projects</h2>
+                <p>Providing service with integrity since 2017</p>
             </section>
 
             <section id="about" class="content-section">
                 <h2>About Us</h2>
-                <p>Since 2017, Dew Day Trading & Projects has been delivering top-quality construction, refurbishment, and project management services.</p>
+                <p>Since 2017, Dew Day Trading &amp; Projects has been delivering top-quality construction, refurbishment, and project management services.</p>
             </section>
 
             <section id="services" class="content-section">
                 <h2>Our Services</h2>
                 <ul>
-                    <li>Supply & Delivery</li>
+                    <li>Supply &amp; Delivery</li>
                     <li>Construction</li>
-                    <li>Painting & Road Marking</li>
-                    <li>Plumbing & Electrical</li>
-                    <li>Refurbishment & Waterproofing</li>
+                    <li>Painting &amp; Road Marking</li>
+                    <li>Plumbing &amp; Electrical</li>
+                    <li>Refurbishment &amp; Waterproofing</li>
                     <li>Safety Management</li>
                     <li>Project Management</li>
+                    <li>Aluminium Doors & Windows installations</li>
                     <li>Entertainment Services (DJ Bookings, Sound System Rentals)</li>
                 </ul>
             </section>
@@ -62,7 +63,7 @@
             </section>
 
             <section id="compliance" class="content-section">
-                <h2>Compliance & Certifications</h2>
+                <h2>Compliance &amp; Certifications</h2>
                 <p>We comply with industry regulations such as OHSA, NHBRC, B-BBEE Level 1, and ISO 9001.</p>
             </section>
 
@@ -72,10 +73,9 @@
             </section>
         </div>
 
-        <aside class="side-form">
-            <form id="contactForm" novalidate>
-                {% csrf_token %}
-                <h3>Request a Quotation</h3>
+        <aside class="side-form" id="contact">
+            <form id="contact-form" novalidate>
+                <h2>Request a Quotation</h2>
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Your Name" required>
                 <label for="email">Email</label>
@@ -84,17 +84,18 @@
                 <input type="tel" id="number" name="number" placeholder="Your Contact Number" required>
                 <label for="message">Message</label>
                 <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                <p id="form-status" role="status" aria-live="polite"></p>
                 <button type="submit">Send</button>
             </form>
         </aside>
-    </div>
+    </main>
 
     <noscript>
-        <p style="color: red;">JavaScript is required to submit the form.</p>
+        <p class="noscript-message">JavaScript is required to submit the form and navigate between sections.</p>
     </noscript>
 
     <footer>
-        <p>&copy; 2024 Dew Day Trading & Projects. All rights reserved.</p>
+        <p>&copy; <span id="year">2026</span> Dew Day Trading &amp; Projects. All rights reserved.</p>
         <div class="contact-info">
             <h2>Contact Us</h2>
             <p>Email: dewdaytrading@gmail.com</p>
@@ -103,7 +104,5 @@
             <p>Address: 15 E.C Pienaar Str, Vanderbijl Park, 1911</p>
         </div>
     </footer>
-
-    <script src="{% static 'main/scripts/main.js' %}"></script>
 </body>
 </html>

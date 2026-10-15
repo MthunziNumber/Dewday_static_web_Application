@@ -2,19 +2,24 @@ export interface Env {
   APP_NAME?: string;
   EMAIL_API_URL?: string;
   EMAIL_API_TOKEN?: string;
+  EMAIL_FROM?: string;
+  ASSETS?: Fetcher;
   fetch?: typeof fetch;
 }
 
 interface ContactPayload {
   name: string;
   email: string;
+  number: string;
   message: string;
 }
 
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 254;
+const MAX_NUMBER_LENGTH = 30;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NUMBER_PATTERN = /^[+()\d\s.-]+$/;
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -35,22 +40,34 @@ function validateContact(body: unknown): ContactPayload | null {
   if (!body || typeof body !== "object") return null;
 
   const candidate = body as Record<string, unknown>;
-  const name = normalizeInput(candidate.name).slice(0, MAX_NAME_LENGTH);
-  const email = normalizeInput(candidate.email).slice(0, MAX_EMAIL_LENGTH).toLowerCase();
-  const message = normalizeInput(candidate.message).slice(0, MAX_MESSAGE_LENGTH);
+  const name = normalizeInput(candidate.name);
+  const email = normalizeInput(candidate.email).toLowerCase();
+  const number = normalizeInput(candidate.number);
+  const message = normalizeInput(candidate.message);
 
-  if (!name || !email || !message || !EMAIL_PATTERN.test(email)) {
+  if (
+    name.length < 2 ||
+    name.length > MAX_NAME_LENGTH ||
+    email.length > MAX_EMAIL_LENGTH ||
+    !EMAIL_PATTERN.test(email) ||
+    number.length < 3 ||
+    number.length > MAX_NUMBER_LENGTH ||
+    !NUMBER_PATTERN.test(number) ||
+    message.length < 10 ||
+    message.length > MAX_MESSAGE_LENGTH
+  ) {
     return null;
   }
 
-  return { name, email, message };
+  return { name, email, number, message };
 }
 
 async function sendEmail(payload: ContactPayload, env: Env): Promise<Response> {
   const apiUrl = env.EMAIL_API_URL;
   const token = env.EMAIL_API_TOKEN;
+  const from = env.EMAIL_FROM;
 
-  if (!apiUrl || !token) {
+  if (!apiUrl || !token || !from) {
     return jsonResponse({ error: "Email delivery is not configured." }, 503);
   }
 
@@ -62,11 +79,11 @@ async function sendEmail(payload: ContactPayload, env: Env): Promise<Response> {
       accept: "application/json",
     },
     body: JSON.stringify({
-      subject: `New contact message from ${payload.name}`,
+      subject: `New quotation request from ${payload.name}`,
       to: "dewdaytrading@gmail.com",
-      from: payload.email,
+      from,
       replyTo: payload.email,
-      text: `${payload.message}\n\nFrom: ${payload.name}\nEmail: ${payload.email}`,
+      text: `${payload.message}\n\nFrom: ${payload.name}\nEmail: ${payload.email}\nContact number: ${payload.number}`,
     }),
   });
 
@@ -88,11 +105,15 @@ export async function handleRequest(request: Request, env: Env = {}): Promise<Re
 
   const validPayload = validateContact(body);
   if (!validPayload) {
-    return badRequest("Please provide a valid name, email, and message.");
+    return badRequest("Please provide a valid name, email, contact number, and message.");
   }
 
   try {
     const emailResponse = await sendEmail(validPayload, env);
+    if (emailResponse.status === 503) {
+      return emailResponse;
+    }
+
     if (!emailResponse.ok) {
       console.error("Email delivery failed", await emailResponse.text());
       return jsonResponse({ error: "The message could not be sent. Please try again later." }, 502);
@@ -115,6 +136,10 @@ export default {
 
     if (url.pathname === "/health") {
       return jsonResponse({ ok: true, app: env.APP_NAME ?? "Dewday" });
+    }
+
+    if (!env.ASSETS) {
+      return new Response("Static assets are not configured.", { status: 500 });
     }
 
     const asset = await env.ASSETS.fetch(request);

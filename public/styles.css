@@ -192,6 +192,18 @@ nav ul li a {
     height: 120px;
 }
 
+.side-form #form-status {
+    margin-bottom: 10px;
+}
+
+.side-form #form-status:empty {
+    display: none;
+}
+
+.side-form #form-status.error {
+    color: #b00020;
+}
+
 .side-form button {
     padding: 10px;
     background-color: #556B2F;
@@ -200,6 +212,11 @@ nav ul li a {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+}
+
+.side-form button:disabled {
+    cursor: wait;
+    opacity: 0.7;
 }
 
 .side-form button:hover {
@@ -236,6 +253,12 @@ footer {
     color: white;
     width: 100%;
     margin-top: 40px;
+}
+
+.noscript-message {
+    padding: 12px;
+    color: #b00020;
+    text-align: center;
 }
 
 .contact-info {

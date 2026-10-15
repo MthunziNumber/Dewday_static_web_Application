@@ -23,11 +23,13 @@ describe("contact form Worker", () => {
     );
 
     expect(response.status).toBe(400);
-    expect(await response.json()).toEqual({ error: "Please provide a valid name, email, and message." });
+    expect(await response.json()).toEqual({
+      error: "Please provide a valid name, email, contact number, and message.",
+    });
   });
 
   it("sends a valid email and returns success", async () => {
-    const calls: unknown[] = [];
+    let emailRequest: Request | undefined;
     const response = await handleRequest(
       new Request("https://example.com/api/contact", {
         method: "POST",
@@ -35,14 +37,16 @@ describe("contact form Worker", () => {
         body: JSON.stringify({
           name: "Ada Lovelace",
           email: "ada@example.com",
+          number: "+27 73 761 8175",
           message: "Hello from the test suite.",
         }),
       }),
       {
         EMAIL_API_URL: "https://example.com/api/email",
         EMAIL_API_TOKEN: "test-token",
+        EMAIL_FROM: "verified@example.com",
         fetch: async (input: string | URL | Request, init?: RequestInit) => {
-          calls.push({ input, init });
+          emailRequest = input instanceof Request ? input : new Request(input, init);
           return new Response(JSON.stringify({ ok: true }), { status: 200 });
         },
       },
@@ -50,6 +54,49 @@ describe("contact form Worker", () => {
 
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ success: true });
-    expect(calls).toHaveLength(1);
+    expect(emailRequest?.headers.get("authorization")).toBe("Bearer test-token");
+    expect(emailRequest?.headers.get("content-type")).toBe("application/json");
+    expect(await emailRequest?.json()).toEqual({
+      subject: "New quotation request from Ada Lovelace",
+      to: "dewdaytrading@gmail.com",
+      from: "verified@example.com",
+      replyTo: "ada@example.com",
+      text: "Hello from the test suite.\n\nFrom: Ada Lovelace\nEmail: ada@example.com\nContact number: +27 73 761 8175",
+    });
+  });
+
+  it("rejects a missing or invalid contact number", async () => {
+    const response = await handleRequest(
+      new Request("https://example.com/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: "Ada Lovelace",
+          email: "ada@example.com",
+          number: "call me",
+          message: "Hello from the test suite.",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+  });
+
+  it("returns a service-unavailable response when email delivery is not configured", async () => {
+    const response = await handleRequest(
+      new Request("https://example.com/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: "Ada Lovelace",
+          email: "ada@example.com",
+          number: "+27 73 761 8175",
+          message: "Hello from the test suite.",
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: "Email delivery is not configured." });
   });
 });

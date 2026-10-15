@@ -25,7 +25,7 @@ A Cloudflare Pages/Workers application featuring a responsive landing page and a
    cp .dev.vars.example .dev.vars
    ```
 
-3. Replace the values in `.dev.vars` with your real email provider settings.
+3. Replace the values in `.dev.vars` with your real email provider settings. Set `EMAIL_FROM` to a sender address verified with that provider.
 
 4. Start the Cloudflare Worker locally:
 
@@ -42,6 +42,9 @@ A Cloudflare Pages/Workers application featuring a responsive landing page and a
 
    - `EMAIL_API_URL`
    - `EMAIL_API_TOKEN`
+   - `EMAIL_FROM` (must be a verified sender address)
+
+   You can set them with `npx wrangler secret put EMAIL_API_URL`, `npx wrangler secret put EMAIL_API_TOKEN`, and `npx wrangler secret put EMAIL_FROM`.
 
 3. Deploy with:
 
@@ -49,7 +52,19 @@ A Cloudflare Pages/Workers application featuring a responsive landing page and a
    npm run deploy
    ```
 
-The `EMAIL_API_URL` must point to an email provider endpoint that accepts an authenticated request. The API token remains server-side and is never exposed to the browser.
+The Worker sends a `POST` request to `EMAIL_API_URL` with a `Bearer` authorization token, `content-type: application/json`, and this JSON body:
+
+```json
+{
+  "subject": "New quotation request from Ada Lovelace",
+  "to": "dewdaytrading@gmail.com",
+  "from": "verified-sender@your-domain.example",
+  "replyTo": "ada@example.com",
+  "text": "Please provide a quotation.\n\nFrom: Ada Lovelace\nEmail: ada@example.com\nContact number: +27 73 761 8175"
+}
+```
+
+Use a provider endpoint that accepts this request format, or adapt `sendEmail` in `src/worker.ts` to the provider's API. The visitor's email is used only as `replyTo`; `EMAIL_FROM` is the verified sender. Keep the API token server-side and never expose it to the browser.
 
 ## Contact endpoint
 
@@ -59,11 +74,12 @@ Send a JSON request to `/api/contact`:
 {
   "name": "Ada Lovelace",
   "email": "ada@example.com",
+  "number": "+27 73 761 8175",
   "message": "Hello from the Dewday website."
 }
 ```
 
-The Worker rejects missing, malformed, or oversized fields and returns JSON errors for invalid submissions.
+The Worker rejects missing, malformed, or oversized fields (including the contact number) and returns JSON errors for invalid submissions.
 
 ## Scripts
 
