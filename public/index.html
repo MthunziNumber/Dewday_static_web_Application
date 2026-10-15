@@ -1,136 +1,109 @@
-<!doctype html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Dewday helps you build a clear, confident digital presence." />
-    <title>Dewday | Digital presence, designed for clarity</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="container nav">
-        <a class="brand" href="#top" aria-label="Dewday home">
-          <span class="brand-mark" aria-hidden="true">D</span>
-          <span>Dewday</span>
-        </a>
-        <nav class="nav-links" aria-label="Main navigation">
-          <a href="#services">Services</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <a class="button button-small" href="#contact">Book a consultation</a>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dew Day Trading & Projects</title>
+    <link rel="stylesheet" href="{% static 'main/Styles/styles.css' %}">
+</head>
+
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <h1>Dew Day Trading & Projects</h1>
+                <nav>
+                    <ul>
+                        <li><a href="#" onclick="showSection('home')">Home</a></li>
+                        <li><a href="#" onclick="showSection('about')">About</a></li>
+                        <li><a href="#" onclick="showSection('services')">Services</a></li>
+                        <li><a href="#" onclick="showSection('projects')">Projects</a></li>
+                        <li><a href="#" onclick="showSection('compliance')">Compliance</a></li>
+                        <li><a href="#" onclick="showSection('entertainment')">Entertainment Services</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="container hero-grid">
-          <div>
-            <p class="eyebrow">A better digital presence</p>
-            <h1>We turn ideas into experiences people remember.</h1>
-            <p class="hero-copy">Dewday creates modern, accessible websites and digital systems that make your business easier to trust and easier to use.</p>
-            <div class="hero-actions">
-              <a class="button" href="#contact">Start your project</a>
-              <a class="button button-secondary" href="#services">See services</a>
-            </div>
-            <ul class="proof" aria-label="Company highlights">
-              <li><strong>Fast</strong><span>Launch-ready builds</span></li>
-              <li><strong>Clear</strong><span>Simple user journeys</span></li>
-              <li><strong>Secure</strong><span>Built with best practices</span></li>
-            </ul>
-          </div>
-          <div class="hero-visual" aria-label="Abstract product illustration">
-            <div class="visual-card card-primary">
-              <span class="status-dot"></span>
-              <span>Project dashboard</span>
-              <strong>+42% engagement</strong>
-            </div>
-            <div class="visual-card card-secondary">
-              <span>Conversion</span>
-              <strong>94.8%</strong>
-            </div>
-            <div class="visual-orbit"></div>
-          </div>
+    <button class="toggle-mode">
+        <img src="{% static 'main/Styles/images/moon1.png' %}" alt="Dark Mode" id="theme-icon" width="30" height="30">
+    </button>
+
+    <div class="main-content">
+        <div class="sections">
+            <section id="home" class="content-section active">
+                <h2>Welcome to Dew Day Trading & Projects</h2>
+                <p>Providing service with integrity since 2017!</p>
+            </section>
+
+            <section id="about" class="content-section">
+                <h2>About Us</h2>
+                <p>Since 2017, Dew Day Trading & Projects has been delivering top-quality construction, refurbishment, and project management services.</p>
+            </section>
+
+            <section id="services" class="content-section">
+                <h2>Our Services</h2>
+                <ul>
+                    <li>Supply & Delivery</li>
+                    <li>Construction</li>
+                    <li>Painting & Road Marking</li>
+                    <li>Plumbing & Electrical</li>
+                    <li>Refurbishment & Waterproofing</li>
+                    <li>Safety Management</li>
+                    <li>Project Management</li>
+                    <li>Entertainment Services (DJ Bookings, Sound System Rentals)</li>
+                </ul>
+            </section>
+
+            <section id="projects" class="content-section">
+                <h2>Our Projects</h2>
+                <p>We have successfully delivered projects across construction, refurbishment, and project management.</p>
+            </section>
+
+            <section id="compliance" class="content-section">
+                <h2>Compliance & Certifications</h2>
+                <p>We comply with industry regulations such as OHSA, NHBRC, B-BBEE Level 1, and ISO 9001.</p>
+            </section>
+
+            <section id="entertainment" class="content-section">
+                <h2>Entertainment</h2>
+                <p>Need a vibe? We’ve got you covered—from DJ bookings to sound system rentals. <a href="#contact">Get in touch</a> and let the party begin!</p>
+            </section>
         </div>
-      </section>
 
-      <section class="services section" id="services">
-        <div class="container">
-          <p class="section-label">What we do</p>
-          <h2>Digital solutions built around your goals.</h2>
-          <div class="card-grid">
-            <article class="service-card">
-              <span class="icon" aria-hidden="true">01</span>
-              <h3>Brand experiences</h3>
-              <p>Thoughtful websites and digital touchpoints that communicate value clearly.</p>
-            </article>
-            <article class="service-card">
-              <span class="icon" aria-hidden="true">02</span>
-              <h3>Web applications</h3>
-              <p>Responsive tools that help teams work faster and customers complete tasks with less friction.</p>
-            </article>
-            <article class="service-card">
-              <span class="icon" aria-hidden="true">03</span>
-              <h3>Cloud deployment</h3>
-              <p>Reliable hosting and automation so your product stays available and easy to maintain.</p>
-            </article>
-          </div>
+        <aside class="side-form">
+            <form id="contactForm" novalidate>
+                {% csrf_token %}
+                <h3>Request a Quotation</h3>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <label for="number">Contact Number</label>
+                <input type="tel" id="number" name="number" placeholder="Your Contact Number" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </aside>
+    </div>
+
+    <noscript>
+        <p style="color: red;">JavaScript is required to submit the form.</p>
+    </noscript>
+
+    <footer>
+        <p>&copy; 2024 Dew Day Trading & Projects. All rights reserved.</p>
+        <div class="contact-info">
+            <h2>Contact Us</h2>
+            <p>Email: dewdaytrading@gmail.com</p>
+            <p>Email: SelloMogoera@gmail.com</p>
+            <p>Phone: +27 73 761 8175</p>
+            <p>Address: 15 E.C Pienaar Str, Vanderbijl Park, 1911</p>
         </div>
-      </section>
-
-      <section class="about section" id="about">
-        <div class="container about-grid">
-          <div>
-            <p class="section-label">Why Dewday</p>
-            <h2>Simple decisions, strong results.</h2>
-          </div>
-          <p>Dewday combines strategy, design, and engineering to create digital products that are easier to understand, faster to use, and ready to grow with your business.</p>
-        </div>
-      </section>
-
-      <section class="contact section" id="contact">
-        <div class="container contact-grid">
-          <div>
-            <p class="section-label">Let’s talk</p>
-            <h2>Tell us about your next idea.</h2>
-            <p>Share a few details and we’ll reach out with the right next steps.</p>
-            <div class="contact-details">
-              <p><strong>Email</strong><a href="mailto:hello@dewday.example">hello@dewday.example</a></p>
-              <p><strong>Response time</strong><span>Usually within one business day</span></p>
-            </div>
-          </div>
-
-          <form class="contact-form" id="contact-form" novalidate>
-            <div class="field-row">
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" autocomplete="name" required maxlength="100" />
-            </div>
-            <div class="field-row">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" />
-            </div>
-            <div class="field-row">
-              <label for="message">Project details</label>
-              <textarea id="message" name="message" rows="5" required maxlength="2000" placeholder="Tell us what you’re building..."></textarea>
-            </div>
-            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-            <button class="button" type="submit">Send message</button>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-content">
-        <p>© <span id="year"></span> Dewday</p>
-        <p>Built for a clearer digital future.</p>
-      </div>
     </footer>
 
-    <script src="/app.js" type="module"></script>
-  </body>
+    <script src="{% static 'main/scripts/main.js' %}"></script>
+</body>
 </html>

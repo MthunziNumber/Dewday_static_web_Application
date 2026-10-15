@@ -63,7 +63,7 @@ async function sendEmail(payload: ContactPayload, env: Env): Promise<Response> {
     },
     body: JSON.stringify({
       subject: `New contact message from ${payload.name}`,
-      to: "hello@dewday.example",
+      to: "dewdaytrading@gmail.com",
       from: payload.email,
       replyTo: payload.email,
       text: `${payload.message}\n\nFrom: ${payload.name}\nEmail: ${payload.email}`,
