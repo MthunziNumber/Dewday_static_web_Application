@@ -59,12 +59,12 @@ The Worker sends a `POST` request to `EMAIL_API_URL` with a `Bearer` authorizati
   "subject": "New quotation request from Ada Lovelace",
   "to": "dewdaytrading@gmail.com",
   "from": "verified-sender@your-domain.example",
-  "replyTo": "ada@example.com",
+  "reply_to": "ada@example.com",
   "text": "Please provide a quotation.\n\nFrom: Ada Lovelace\nEmail: ada@example.com\nContact number: +27 73 761 8175"
 }
 ```
 
-Use a provider endpoint that accepts this request format, or adapt `sendEmail` in `src/worker.ts` to the provider's API. The visitor's email is used only as `replyTo`; `EMAIL_FROM` is the verified sender. Keep the API token server-side and never expose it to the browser.
+Use a provider endpoint that accepts this request format, or adapt `sendEmail` in `src/worker.ts` to the provider's API. The visitor's email is used only as `reply_to`; `EMAIL_FROM` is the verified sender. Keep the API token server-side and never expose it to the browser.
 
 ## Contact endpoint
 

@@ -82,7 +82,7 @@ async function sendEmail(payload: ContactPayload, env: Env): Promise<Response> {
       subject: `New quotation request from ${payload.name}`,
       to: "dewdaytrading@gmail.com",
       from,
-      replyTo: payload.email,
+      reply_to: payload.email,
       text: `${payload.message}\n\nFrom: ${payload.name}\nEmail: ${payload.email}\nContact number: ${payload.number}`,
     }),
   });

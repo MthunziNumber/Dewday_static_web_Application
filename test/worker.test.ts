@@ -60,7 +60,7 @@ describe("contact form Worker", () => {
       subject: "New quotation request from Ada Lovelace",
       to: "dewdaytrading@gmail.com",
       from: "verified@example.com",
-      replyTo: "ada@example.com",
+      reply_to: "ada@example.com",
       text: "Hello from the test suite.\n\nFrom: Ada Lovelace\nEmail: ada@example.com\nContact number: +27 73 761 8175",
     });
   });
